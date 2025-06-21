@@ -1,0 +1,100 @@
+{
+  "name": "newsagent",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "ee588ad3-59f5-46e4-a73e-a3046b180d50",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "url": "https://newsapi.org/v2/everything?q=AI OR technology OR science&language=en&pageSize=10&apiKey=c22969a35bc8462f937ec614574d8bc8",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "8e7f6ab6-d34d-4678-894b-d02d213739f9",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "36c394a2-1639-4960-823d-3fe1deed7f3a",
+              "name": "newsText",
+              "value": "={{$json[\"articles\"].map(a => a.title + \". \" + a.description).join(\"\\n\\n\") || \"No news found.\"}}\n",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        440,
+        0
+      ],
+      "id": "0b7ac57d-fbdc-4055-84a9-f240522c4dce",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "9174acce-28fa-4891-abe9-3f7ee380fa40",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "622bccd0df8ac5b2c8e380244af9b48d1441bed30aef5dabb9aae2015ae2eb36"
+  },
+  "id": "qlK8IKkOWpN3CT8n",
+  "tags": []
+}
